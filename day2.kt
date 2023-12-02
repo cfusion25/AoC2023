@@ -29,6 +29,8 @@ fun main(args: Array<String>) {
 
             for (j in l[i].split(',')) {
                 val t = j.split(" ")
+
+                // No Kotlin isn't array at 1, its just that there is extra white space in j and t[0] is just white space
                 if (t[2].first()==('r')) {
                     if (t[1].toInt() > rLimit) {
                         possible = false
