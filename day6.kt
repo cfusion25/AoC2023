@@ -39,10 +39,10 @@ fun main(args: Array<String>) {
         t += race.first
         d += race.second
     }
-    for (i in 1..<t.toLong()) {
+    for (i in 1..<(t.toLong()/2)) {
         if (i * (t.toLong() - i) > d.toLong()) {
             count += 1
         }
     }
-    println(count)
+    println(count*2+1)
 }
