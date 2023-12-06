@@ -21,28 +21,26 @@ fun main(args: Array<String>) {
     races.forEach { race ->
         val t = race.first.toInt()
         val d = race.second.toInt()
-        var count = 0
-        for (i in 1..<t) {
+        for (i in 1..<t/2) {
             if (i * (t - i) > d) {
-                count += 1
+                mult *= t - (2*i - 1)
+                break
             }
         }
-        mult *= count
     }
     println(mult)
 
     // Part 2
     var t = ""
     var d = ""
-    var count = 0
     races.forEach { race ->
         t += race.first
         d += race.second
     }
     for (i in 1..<(t.toLong()/2)) {
         if (i * (t.toLong() - i) > d.toLong()) {
-            count += 1
+            println(t.toLong() - (2*i - 1))
+            break
         }
     }
-    println(count*2+1)
 }
