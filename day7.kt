@@ -74,7 +74,7 @@ fun main(args: Array<String>) {
     }
     println(sum1)
 
-    // Part 2 Functions are Cringe
+    // Part 2
     val handMap2 = mapOf('A' to 13, 'K' to 12, 'Q' to 11, 'J' to 1, 'T' to 10, '9' to 9, '8' to 8, '7' to 7, '6' to 6, '5' to 5, '4' to 4, '3' to 3, '2' to 2)
 
     val handList2 = mutableListOf<Pair<String, String>>()
@@ -84,17 +84,10 @@ fun main(args: Array<String>) {
         val count = hand.groupingBy { it }.eachCount().toMutableMap()
 
         if (count['J'] != null && count.size > 1) {
-            var num = 0
-            var letter = Character.MIN_VALUE
             val j = count['J']
-            count.forEach{
-                if (it.key != 'J' && it.value > num) {
-                    num = it.value
-                    letter = it.key
-                }
-            }
             count.remove('J')
-            count[letter] = num + j!!
+            val max = count.maxBy { it.value }
+            count[max.key] = max.value + j!!
         }
 
         handValue = addValue(hand, count, handMap2)
