@@ -3,59 +3,67 @@ import java.io.InputStream
 import java.lang.Long.parseLong
 
 
+fun addValue(hand: String, count: MutableMap<Char, Int>, handMap: Map<Char,Int>) :String {
+    var handValue = ""
+    if(count.size == 1) {
+        handValue += "7"
+    }
+    if(count.size == 2) {
+        run check@{
+            count.forEach{
+                if (it.value == 4 || it.value == 1) {
+                    handValue += "6"
+                }
+                else {
+                    handValue += "5"
+                }
+                return@check
+            }
+        }
+    }
+    if (count.size == 3) {
+        var three = false
+        count.forEach{
+            if (it.value == 3) {
+                three = true
+            }
+        }
+        if (three) {
+            handValue += "4"
+        }
+        else {
+            handValue += "3"
+        }
+    }
+    if (count.size == 4) {
+        handValue += "2"
+    }
+    if (count.size == 5) {
+        handValue += "1"
+    }
+
+    hand.forEach {
+        handValue += handMap[it]?.let { it1 -> Integer.toHexString(it1) }
+    }
+
+    return handValue
+}
+
 fun main(args: Array<String>) {
     val inputStream: InputStream = File("C:\\Users\\coldf\\OneDrive\\Desktop\\AoC2023\\input\\d7.txt").inputStream()
     val lineList = mutableListOf<Pair<String, String>>()
     val handMap = mapOf('A' to 13, 'K' to 12, 'Q' to 11, 'J' to 10, 'T' to 9, '9' to 8, '8' to 7, '7' to 6, '6' to 5, '5' to 4, '4' to 3, '3' to 2, '2' to 1 )
 
     inputStream.bufferedReader().forEachLine { lineList.add(it.strip().split(" ").zipWithNext()[0]) }
-//    print(lineList)
     // Part 1
     val handList = mutableListOf<Pair<String, String>>()
     lineList.forEach { pair ->
         var handValue = ""
         val hand = pair.first
-        val count = hand.groupingBy { it }.eachCount()
-        if(count.size == 1) {
-            handValue += "7"
-        }
-        if(count.size == 2) {
-            run check@{
-                count.forEach{
-                    if (it.value == 4 || it.value == 1) {
-                        handValue += "6"
-                    }
-                    else {
-                        handValue += "5"
-                    }
-                    return@check
-                }
-            }
-        }
-        if (count.size == 3) {
-            var three = false
-            count.forEach{
-                if (it.value == 3) {
-                    three = true
-                }
-            }
-            if (three) {
-                handValue += "4"
-            }
-            else {
-                handValue += "3"
-            }
-        }
-        if (count.size == 4) {
-            handValue += "2"
-        }
-        if (count.size == 5) {
-            handValue += "1"
-        }
+        val count = hand.groupingBy { it }.eachCount().toMutableMap()
 
-        hand.forEach {
-            handValue += handMap[it]?.let { it1 -> Integer.toHexString(it1) }
-        }
+        handValue = addValue(hand, count, handMap)
+
         handList.add(Pair(handValue, pair.second))
     }
 
@@ -89,46 +97,8 @@ fun main(args: Array<String>) {
             count[letter] = num + j!!
         }
 
-        if(count.size == 1) {
-            handValue += "7"
-        }
-        if(count.size == 2) {
-            run check@{
-                count.forEach{
-                    if (it.value == 4 || it.value == 1) {
-                        handValue += "6"
-                    }
-                    else {
-                        handValue += "5"
-                    }
-                    return@check
-                }
-            }
-        }
-        if (count.size == 3) {
-            var three = false
-            count.forEach{
-                if (it.value == 3) {
-                    three = true
-                }
-            }
-            if (three) {
-                handValue += "4"
-            }
-            else {
-                handValue += "3"
-            }
-        }
-        if (count.size == 4) {
-            handValue += "2"
-        }
-        if (count.size == 5) {
-            handValue += "1"
-        }
+        handValue = addValue(hand, count, handMap2)
 
-        hand.forEach {
-            handValue += handMap2[it]?.let { it1 -> Integer.toHexString(it1) }
-        }
         handList2.add(Pair(handValue, pair.second))
     }
 
