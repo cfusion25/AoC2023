@@ -1,6 +1,7 @@
 import java.io.File
 import java.io.InputStream
 import java.lang.Math.sqrt
+import kotlin.math.pow
 
 
 fun findSteps (current: String, full: Int, instructions: List<Char>, path: MutableMap<String, Pair<String, String>>) :Int {
@@ -72,28 +73,43 @@ fun main(args: Array<String>) {
         ends.add(findSteps(it,0,instructions,path))
     }
 
-    val primes = mutableListOf<Int>()
+    val primes = mutableListOf<List<Int>>()
     ends.forEach {
         var n = it
+        val l = mutableListOf<Int>()
         while(n % 2 == 0) {
-            primes.add(2)
+            l.add(2)
             n /= 2
         }
         val squareRoot = sqrt(n.toDouble()).toInt()
         for (i in 3..squareRoot step 2) {
             while(n % i == 0) {
-                primes.add(i)
+                l.add(i)
                 n /= i
             }
         }
         if ( n > 2) {
-            primes.add(n)
+            l.add(n)
+        }
+        primes.add(l)
+    }
+
+    val primeExp = mutableMapOf<Int,Int>()
+    primes.forEach {num ->
+        val temp = num.groupingBy { it }.eachCount()
+        temp.forEach {
+            if (primeExp[it.key] == null) {
+                primeExp[it.key] = it.value
+            } else if (primeExp[it.key]!! > it.value) {
+                primeExp[it.key] = it.value
+            }
         }
     }
 
     var product:Long = 1
-    primes.toSet().forEach {
-        product *= it.toLong()
+    primeExp.forEach {
+        product *= it.key.toDouble().pow(it.value).toLong()
     }
+
     println(product)
 }
