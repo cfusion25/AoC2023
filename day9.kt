@@ -21,17 +21,15 @@ fun main(args: Array<String>) {
             focus = diff
             diffList[index].add(diff)
         }
-        // Part 1
+        // Part 1 + 2
         diffList[index][diffList[index].size-1].add(0)
-        for (i in (diffList[index].size - 2) downTo 0){
-            diffList[index][i].add((diffList[index][i + 1].last() + diffList[index][i].last()))
-        }
-        endSum += line.last() + diffList[index][0].last()
-        // Part 2
         diffList[index][diffList[index].size-1].add(0, 0)
         for (i in (diffList[index].size - 2) downTo 0){
+            diffList[index][i].add((diffList[index][i + 1].last() + diffList[index][i].last()))
             diffList[index][i].add(0,(diffList[index][i].first() - diffList[index][i + 1].first()))
+
         }
+        endSum += line.last() + diffList[index][0].last()
         startSum += line.first() - diffList[index][0].first()
     }
     println(endSum)
