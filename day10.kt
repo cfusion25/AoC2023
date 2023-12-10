@@ -72,6 +72,8 @@ fun main(args: Array<String>) {
         }
         lineList.add(charList)
     }
+
+    // Part 1
     val pastLoc = mutableListOf<Pair<Int,Int>>()
     var start: Pair<Int, Int>
     var dir = Pair(Pair(0,0),Pair(0,0))
@@ -84,7 +86,7 @@ fun main(args: Array<String>) {
             }
         }
     }
-
+    
     var sCount = 0
     while(true) {
         sCount += 1
@@ -138,7 +140,7 @@ fun main(args: Array<String>) {
     }
     println(sCount)
 
-//    lineList[start.first][start.second] = '7'
+    // Part 2
     val pastSet = pastLoc.toSet()
     var encircled = 0
     lineList.forEachIndexed { i, line ->
