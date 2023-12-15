@@ -26,41 +26,44 @@ fun main(args: Array<String>) {
     println(totalSum)
 
     // Part 2
-    var boxes = MutableList<MutableList<Pair<String, Int>>?>(256) { mutableListOf<Pair<String, Int>>() }
-    hashes.forEach { hash ->
+    var boxes = HashMap<Int,HashMap<Int,HashMap<String, Int>>?>()
+    hashes.forEachIndexed {pos, hash ->
         if (hash.contains('=')) {
             var temp = hash.split('=')
+            for (k in pos..<hashes.size) {
+                val check = hashes[k]
+                if (check.contains('-')) {
+                    if (check.split('-')[0] == temp[0]) {
+                        return@forEachIndexed
+                    }
+                }
+            }
             var boxNum = hashValue(temp[0])
             var i = -1
-            boxes[boxNum]?.forEachIndexed {index, lens ->
-                if(lens.first == temp[0]) {
-                    i = index
+            boxes[boxNum]?.forEach {index, maps->
+                maps.forEach {lens ->
+                    if(lens.key == temp[0]) {
+                        i = index
+                    }
                 }
             }
             if (i > -1) {
-                boxes[boxNum]?.set(i, Pair(temp[0],temp[1].toInt()))
+                boxes[boxNum]?.set(i, hashMapOf(temp[0] to temp[1].toInt()))
             } else {
-                boxes[boxNum]?.add(Pair(temp[0],temp[1].toInt()))
-            }
-        }
-        if (hash.contains('-')) {
-            var temp = hash.split('-')
-            var boxNum = hashValue(temp[0])
-            var i = -1
-            boxes[boxNum]?.forEachIndexed() {index, lens ->
-                if (lens.first == temp[0]) {
-                    i = index
+                if (boxes[boxNum] == null) {
+                    boxes[boxNum] = hashMapOf(0 to hashMapOf(temp[0] to temp[1].toInt()))
+                } else {
+                    boxes[boxNum]?.set(boxes[boxNum]!!.size, hashMapOf(temp[0] to temp[1].toInt()))
                 }
-            }
-            if (i > -1) {
-                boxes[boxNum]?.removeAt(i)
             }
         }
     }
     var boxSum = 0
-    boxes.forEachIndexed{boxNum, box ->
-        box?.forEachIndexed { index, lens ->
-            boxSum += (boxNum + 1) * (index + 1) * lens.second
+    boxes.forEach{boxNum, box ->
+        box?.forEach { index, maps ->
+            maps.forEach { lens ->
+                boxSum += (boxNum + 1) * (index + 1) * lens.value.toInt()
+            }
         }
     }
     println(boxSum)
