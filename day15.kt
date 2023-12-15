@@ -26,6 +26,7 @@ fun main(args: Array<String>) {
     println(totalSum)
 
     // Part 2
+    // I heard you like HashMaps so I put a HashMap<Int,HashMap<String,Int>> in your HashMap
     var boxes = HashMap<Int,HashMap<Int,HashMap<String, Int>>?>()
     hashes.forEachIndexed {pos, hash ->
         if (hash.contains('=')) {
